@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   get "new" => "products#new"
   get ":id" => "products#show", as: :product
   post "hello" => "products#create"
+  get "edit/:id" => "products#edit"
+  put "hi/:id" => "products#update", as: :edit
   # Defines the root path route ("/")
   # root "posts#index"
 end
