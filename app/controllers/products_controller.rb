@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
   def index
-    @products = Product.all
+    @products = Product.all.order(id: "asc")
   end
 
   def new
@@ -25,21 +25,26 @@ class ProductsController < ApplicationController
   end
 
   def update
-    puts "hello"
-    puts params
-    puts "hi"
-    puts product_params
     @product = Product.find(params[:id])
-    @product.name = product_params[:name]
-    if @product.save
-      redirect_to @product, notice: 'Product was successfully created.'
+    if @product.update(product_params)
+      redirect_to @product, notice: 'Product was successfully updated.'
     else
-      render :new
+      render :edit
     end
   end
 
+  def destroy
+    @product = Product.destroy(params[:id])
+    if @product.destroyed?
+      redirect_to products_path, notice: 'Product was destroyed'
+    else 
+      render :index
+    end
+  end
+
+
   private
   def product_params
-    params.require(:product).permit(:name)
+    params.require(:product).permit(:name, :price, :description)
   end
 end
